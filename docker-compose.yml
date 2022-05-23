@@ -1,0 +1,35 @@
+version: '3.7'
+
+x-pwn:
+    &pwn
+    cap_drop:
+        - all
+    cap_add:
+        - chown
+        - setuid
+        - setgid
+        - sys_admin
+    security_opt:
+        - apparmor=unconfined
+        - seccomp=unconfined
+
+services:
+
+    secret:
+        << : *pwn
+        build: ./Pwn/Secret
+        ports:
+            - "5001:5000"
+
+    leak:
+        << : *pwn
+        build: ./Pwn/Leak
+        ports:
+            - "5002:5000"
+
+    rope:
+        << : *pwn
+        build: ./Pwn/Rope
+        ports:
+            - "5003:5000"
+
